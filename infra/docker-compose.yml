@@ -35,6 +35,8 @@ services:
     command: uvicorn src.main:app --host 0.0.0.0 --port 8000
     environment:
       DATABASE_URL: postgresql+psycopg://sovren:securepass@db:5432/sovren_ai
+      REDIS_URL: redis://redis:6379/0
+      MONGO_URI: mongodb://mongo:27017
       PYTHONPATH: /app
     volumes:
       - ../backend:/app
