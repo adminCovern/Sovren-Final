@@ -1,0 +1,35 @@
+# Node
+node_modules/
+.npmrc
+
+# Next.js
+.next/
+out/
+
+# Playwright
+playwright-report/
+blob-report/
+playwright/.cache/
+frontend/test-results/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.venv/
+backend/venv/
+
+# Env files
+.env
+.env.*
+frontend/.env.local
+backend/.env
+
+# OS / Editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
