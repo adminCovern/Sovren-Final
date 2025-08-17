@@ -28,6 +28,10 @@ def run_migrations_offline():
 
 def run_migrations_online():
     section = config.get_section(config.config_ini_section) or {}
+    # Allow overriding URL via environment variable (e.g., when running in Docker)
+    env_url = os.getenv("DATABASE_URL")
+    if env_url:
+        section["sqlalchemy.url"] = env_url
     connectable = engine_from_config(
         section,
         prefix="sqlalchemy.",

@@ -1,0 +1,27 @@
+name: pip-audit
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  pip-audit:
+    name: Backend pip-audit
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          ./venv/bin/python -m pip install --upgrade pip
+          ./venv/bin/pip install -r requirements.txt pip-audit
+      - name: Run pip-audit (prod deps only)
+        run: ./venv/bin/pip-audit --requirement requirements.txt --disable-pip --strict
+
