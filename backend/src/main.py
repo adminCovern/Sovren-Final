@@ -7,6 +7,7 @@ from sqlalchemy import text
 from src.db import engine  # reuse configured SQLAlchemy engine
 import redis as redis_lib
 from pymongo import MongoClient
+from src.telephony.service import resolve_did
 
 app = FastAPI(title="Sovren AI Backend")
 
@@ -64,4 +65,9 @@ def status():
 def metrics():
     data = generate_latest(registry)
     return PlainTextResponse(data.decode("utf-8"), media_type=CONTENT_TYPE_LATEST)
+
+@app.get("/telephony/resolve")
+def telephony_resolve(did: str):
+    return JSONResponse(resolve_did(did))
+
 

@@ -2,6 +2,9 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+# Hide noisy pip root user warning inside containers
+ENV PIP_ROOT_USER_ACTION=ignore
+
 
 WORKDIR /app
 
