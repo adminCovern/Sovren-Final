@@ -38,6 +38,8 @@ services:
       REDIS_URL: redis://redis:6379/0
       MONGO_URI: mongodb://mongo:27017
       PYTHONPATH: /app
+    env_file:
+      - ./.env
     volumes:
       - ../backend:/app
     working_dir: /app
