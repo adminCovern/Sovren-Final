@@ -27,6 +27,8 @@ backend/venv/
 frontend/.env.local
 backend/.env
 
+infra/.env
+
 # OS / Editors
 .DS_Store
 Thumbs.db
