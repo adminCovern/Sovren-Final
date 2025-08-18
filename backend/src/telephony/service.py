@@ -34,3 +34,25 @@ def resolve_did(did: str) -> dict:
         token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
         return {"ok": True, "persona": mapping.persona, "cnam": mapping.cnam, "token": token}
 
+
+def upsert_mapping(session: Session, did: str, persona: str, cnam: str) -> ExecutiveDidMap:
+    mapping = find_mapping(session, did)
+    if mapping:
+        mapping.persona = persona
+        mapping.cnam = cnam
+    else:
+        mapping = ExecutiveDidMap(did=did, persona=persona, cnam=cnam)
+        session.add(mapping)
+    session.commit()
+    session.refresh(mapping)
+    return mapping
+
+
+def delete_mapping(session: Session, did: str) -> bool:
+    mapping = find_mapping(session, did)
+    if not mapping:
+        return False
+    session.delete(mapping)
+    session.commit()
+    return True
+

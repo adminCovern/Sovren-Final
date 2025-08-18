@@ -70,4 +70,31 @@ def metrics():
 def telephony_resolve(did: str):
     return JSONResponse(resolve_did(did))
 
+from fastapi import Header
+
+ADMIN_TOKEN = os.getenv("ADMIN_TOKEN")
+
+@app.post("/telephony/admin/map")
+def admin_upsert_mapping(did: str, persona: str, cnam: str, authorization: str | None = Header(default=None)):
+    if not ADMIN_TOKEN:
+        return JSONResponse({"ok": False, "error": "admin disabled"}, status_code=403)
+    if not authorization or authorization != f"Bearer {ADMIN_TOKEN}":
+        return JSONResponse({"ok": False, "error": "unauthorized"}, status_code=401)
+    from src.telephony.service import upsert_mapping
+    with SessionLocal() as session:
+        m = upsert_mapping(session, did, persona, cnam)
+        return JSONResponse({"ok": True, "did": m.did, "persona": m.persona, "cnam": m.cnam})
+
+@app.delete("/telephony/admin/map")
+def admin_delete_mapping(did: str, authorization: str | None = Header(default=None)):
+    if not ADMIN_TOKEN:
+        return JSONResponse({"ok": False, "error": "admin disabled"}, status_code=403)
+    if not authorization or authorization != f"Bearer {ADMIN_TOKEN}":
+        return JSONResponse({"ok": False, "error": "unauthorized"}, status_code=401)
+    from src.telephony.service import delete_mapping
+    with SessionLocal() as session:
+        ok = delete_mapping(session, did)
+        return JSONResponse({"ok": ok})
+
+
 
