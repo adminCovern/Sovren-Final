@@ -1,15 +1,16 @@
-from sqlalchemy import Integer, String, UniqueConstraint
+from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 from ..db import Base
 
 class ExecutiveDidMap(Base):
     __tablename__ = "executive_did_map"
-    __table_args__ = (
-        UniqueConstraint("did", name="uq_executive_did_map_did"),
-    )
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    did: Mapped[str] = mapped_column(String(20), nullable=False, index=True)
-    persona: Mapped[str] = mapped_column(String(64), nullable=False)
-    cnam: Mapped[str] = mapped_column(String(64), nullable=False)
+    # Surrogate primary key
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
+    # DID is unique and indexed for fast lookups
+    did: Mapped[str] = mapped_column(String(32), nullable=False, unique=True, index=True)
+
+    # Persona and CNAM (caller name) values
+    persona: Mapped[str] = mapped_column(String(128), nullable=False)
+    cnam: Mapped[str] = mapped_column(String(128), nullable=False)
