@@ -14,9 +14,10 @@ down_revision = ${repr(down_revision)}
 branch_labels = ${repr(branch_labels)}
 depends_on = ${repr(depends_on)}
 
+
 def upgrade() -> None:
-    pass
+    raise NotImplementedError("🚨 Upgrade migration not implemented! Fill this in before applying.")
+
 
 def downgrade() -> None:
-    pass
-
+    raise NotImplementedError("🚨 Downgrade migration not implemented! Fill this in before applying.")
