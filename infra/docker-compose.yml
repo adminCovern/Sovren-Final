@@ -21,9 +21,11 @@ services:
   redis:
     image: redis:7
     container_name: sovren-redis
+    command: ["redis-server", "--appendonly", "yes"]
     ports:
       - "6379:6379"
-    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data   # ✅ persistence for redis
 
   mongo:
     image: mongo:7
@@ -45,6 +47,7 @@ services:
       REDIS_URL: redis://redis:6379/0
       MONGO_URI: mongodb://sovren:securepass@mongo:27017/admin
       PYTHONPATH: /app
+      ADMIN_TOKEN: super-secret-admin-token  # ✅ protect telephony admin APIs
     volumes:
       - ../backend:/app
     working_dir: /app
@@ -66,3 +69,4 @@ services:
 volumes:
   pgdata:
   mongodata:
+  redisdata:   # ✅ new persistence volume
