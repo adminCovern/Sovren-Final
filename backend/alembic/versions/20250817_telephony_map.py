@@ -17,14 +17,15 @@ def upgrade() -> None:
     op.create_table(
         'executive_did_map',
         sa.Column('id', sa.Integer(), primary_key=True),
-        sa.Column('did', sa.String(length=20), nullable=False, index=True),
+        sa.Column('did', sa.String(length=20), nullable=False),
         sa.Column('persona', sa.String(length=64), nullable=False),
         sa.Column('cnam', sa.String(length=64), nullable=False),
     )
     op.create_unique_constraint('uq_executive_did_map_did', 'executive_did_map', ['did'])
+    op.create_index('ix_executive_did_map_did', 'executive_did_map', ['did'])
 
 
 def downgrade() -> None:
+    op.drop_index('ix_executive_did_map_did', table_name='executive_did_map')
     op.drop_constraint('uq_executive_did_map_did', 'executive_did_map', type_='unique')
     op.drop_table('executive_did_map')
-
