@@ -4,7 +4,7 @@ from prometheus_client import CollectorRegistry, Counter, generate_latest, CONTE
 import os
 import time
 from sqlalchemy import text
-from src.db import engine, SessionLocal  # ✅ make sure SessionLocal is imported
+from src.db import engine, SessionLocal
 import redis as redis_lib
 from pymongo import MongoClient
 from src.telephony.service import resolve_did, upsert_mapping, delete_mapping
